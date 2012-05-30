@@ -1,4 +1,4 @@
-function [EMBEDDING,LOSS,STRESS,new_graph,new_dists] = embedAndEval(GRAPH,DISTS,DIM)
+    function [EMBEDDING,LOSS,STRESS,new_graph,new_dists] = embedAndEval(GRAPH,DISTS,DIM)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % [EMBEDDING,LOSS,STRESS,new_graph,new_dists] = 
 %                                         embedAndEvaluate(GRAPH,DISTS,DIM)
