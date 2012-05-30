@@ -23,11 +23,13 @@ dists = allDistances(POINTS,POINTS);
 
 % Find the threshold. 
 % We need to include all NODES diagonal entries (they will all be 0)
-% plus 2 entries (symmetric) for each EDGES pairs.
-cutoff = thresh(dists,(2*NUM_EDGES)+NUM_NODES);
+% plus 2 entries (symmetric) for each NUM_EDGES pairs.
+cutoff = thresh(dists,NUM_NODES+(2*NUM_EDGES));
 
-% Generate the graph and exclude diagon entries (self-edges)
+% Generate the graph and exclude diagonal entries (self-edges)
 graph = dists<=cutoff - eye(NUM_NODES);
+msg = ['generated graph with ' num2str(size(dists,1)) ' nodes and']
+msg = [num2str(sum(sum(graph))/2) ' edges']
 
 % Sparsify.
 GRAPH = sparse(graph);
