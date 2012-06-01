@@ -50,7 +50,7 @@ distmats = cell([t g]);
 for j = 1:g    
     dists = graphallshortestpaths(graphs{j});
     num_nodes = size(dists,1);
-    m = max(max(dists~=Inf));
+    m = max(dists(dists~=Inf));
     dists(dists==Inf) = 3*m; % higham does: dists(dists>4)=4;
     distmats{1}{j} = dists;
     distmats{2}{j} = dists.^(1/2);

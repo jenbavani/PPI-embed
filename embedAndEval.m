@@ -22,13 +22,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Embed using mMDS.
-javaaddpath('/Users/vkrishnan/Documents/research/harc/MDS/mdscale.jar');
+javaaddpath('/Users/vkrishnan/Documents/research/PPI-embed/MDS/mdscale.jar');
 EMBEDDING = mdscale.MDS.distanceScaling(DISTS,DIM);
 EMBEDDING = EMBEDDING';
 
 % Get new distances and discover edges.
-new_dists = allDistances(EMBEDDING,EMBEDDING);
-num_edges = sum(sum(GRAPH))/2
+new_dists = allDistances(EMBEDDING);
+num_edges = sum(sum(GRAPH))/2;
 new_graph = discoverEdges(EMBEDDING,num_edges);
 
 % Calculate stress and graph loss.

@@ -11,4 +11,5 @@ for i = 1:size(folders,1)
     if fname(1) ~= '.'
         fpath = [pwd filesep fname]
         addpath(fpath)
+    end
 end
