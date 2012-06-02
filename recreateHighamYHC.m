@@ -4,23 +4,24 @@ nPts = size(yeastgraph,1);
 figure;
 hold on;
 
-
 g = yeastgraph;
 size(g)
+
 %     dists = allDistances(p);
 %     mNoise = noise*rand(size(dists))-.5*noise;
 %     dists = dists + mNoise;
- dists = graphallshortestpaths(g);
- dists = dists.^(1/2);
- dists(dists>2) = 5^(1/2);
+
+dists = graphallshortestpaths(g);
+dists(dists>4) = 5;
+dists = dists.^(1/2);
 
 % Embed using SMACOF.
-% javaaddpath('/Users/vkrishnan/Documents/research/PPI-embed/MDS/mdscale.jar');
-% EMBEDDING = mdscale.MDS.distanceScaling(dists,2);
-% EMBEDDING = EMBEDDING';
+javaaddpath('./MDS/mdscale.jar');
+EMBEDDING = mdscale.MDS.distanceScaling(dists,2);
+EMBEDDING = EMBEDDING';
 
 % Embed using Higham's MDS method.
- EMBEDDING = highamEmbed(dists,2);
+% EMBEDDING = highamEmbed(dists,2);
 size(EMBEDDING)
 
 % Get new distances and discover edges.
