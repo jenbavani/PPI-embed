@@ -14,9 +14,9 @@ dists = cell(numGraphs,2);
 
 nDists = nPts^2;
 intervals = 1000:1000:nDists;
-specificity = zeros(size(intervals(:)),2,numGraphs);
-sensitivity = zeros(size(intervals(:)),2,numGraphs);
-precision = zeros(size(intervals(:)),2,numGraphs);
+specificity = zeros(size(intervals(:),1),2,numGraphs);
+sensitivity = zeros(size(intervals(:),1),2,numGraphs);
+precision = zeros(size(intervals(:),1),2,numGraphs);
 
 for i=1:size(noise(:),1)
     n = noise(i);
