@@ -45,7 +45,7 @@ for i=1:numGraphs
 
         % Embed using SMACOF.
         javaaddpath('./MDS/mdscale.jar');
-        EMBEDDING = mdscale.MDS.distanceScaling(dists,3);
+        EMBEDDING = mdscale.MDS.distanceScaling(d,3);
         EMBEDDING = EMBEDDING';
 
         % Embed using Higham's MDS method.
