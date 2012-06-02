@@ -1,5 +1,6 @@
 load(['.' filesep 'data' filesep 'yeastHC.mat'],'yeastgraph');
 nPts = size(yeastgraph,1);
+nEdges = sum(yeastgraph(:))/2;
 colors = 'rgbcmyk';
 
 
@@ -11,9 +12,15 @@ numGraphs=size(noise(:),1)+1;
 graphs = cell(numGraphs,1);
 dists = cell(numGraphs,2);
 
+nDists = nPts^2;
+intervals = 1000:1000:nDists;
+specificity = zeros(size(intervals(:)),2,numGraphs);
+sensitivity = zeros(size(intervals(:)),2,numGraphs);
+precision = zeros(size(intervals(:)),2,numGraphs);
+
 for i=1:size(noise(:),1)
     n = noise(i);
-    [g,p] = geoRandGraphEps(nPts,.25,2);
+    [g,p] = geoRandGraph(nPts,nEdges,3);
     graphs{i}=g;
 end
 
@@ -35,12 +42,12 @@ for i=1:numGraphs
      for j=1:2
 
         % Embed using SMACOF.
-        % javaaddpath('/Users/vkrishnan/Documents/research/PPI-embed/MDS/mdscale.jar');
-        % EMBEDDING = mdscale.MDS.distanceScaling(dists,2);
-        % EMBEDDING = EMBEDDING';
+        javaaddpath('./MDS/mdscale.jar');
+        EMBEDDING = mdscale.MDS.distanceScaling(dists,3);
+        EMBEDDING = EMBEDDING';
 
         % Embed using Higham's MDS method.
-        EMBEDDING = highamEmbed(dists{i}{j},2);
+        % EMBEDDING = highamEmbed(dists{i}{j},2);
         size(EMBEDDING)
 
         % Get new distances and discover edges.
@@ -48,7 +55,7 @@ for i=1:numGraphs
 
         dflat = new_dists(:);
         dflat = sort(dflat);
-        epsilons = dflat(1:2:size(dflat));
+        epsilons = dflat(intervals);
         n = size(epsilons,1);
         TP = zeros(n,1);
         FP = zeros(n,1);
@@ -64,14 +71,10 @@ for i=1:numGraphs
         end
 
 
-        specificity = TN ./ ( TN + FP);
-        sensitivity = TP ./ ( TP + FN);
-        recall = sensitivity;
-        precision = TP ./ (TP + FP);
+        specificity(k,j,i) = TN ./ ( TN + FP);
+        sensitivity(k,j,i) = TP ./ ( TP + FN);
+        precision(k,j,i) = TP ./ (TP + FP);
 
-        plot(1-specificity,sensitivity,'Color',colors(mod(i,7)+1));
-
-        plot(recall,precision,'Color',colors(mod(i,7)+1));
      end
 end
 
