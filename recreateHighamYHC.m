@@ -1,10 +1,11 @@
-load('data/yeastHC.mat','yeastgraph');
+load(['.' filesep 'data' filesep 'yeastHC.mat'],'yeastgraph');
 nPts = size(yeastgraph,1);
 
 figure;
 hold on;
 
 g = yeastgraph;
+clear yeastgraph;
 size(g)
 
 %     dists = allDistances(p);
@@ -22,6 +23,7 @@ EMBEDDING = EMBEDDING';
 
 % Embed using Higham's MDS method.
 % EMBEDDING = highamEmbed(dists,2);
+
 size(EMBEDDING)
 
 % Get new distances and discover edges.
@@ -29,7 +31,7 @@ new_dists = allDistances(EMBEDDING);
 
 dflat = new_dists(:);
 dflat = sort(dflat);
-epsilons = dflat(1:2:size(dflat));
+epsilons = dflat(1000:1000:size(dflat));
 n = size(epsilons,1);
 TP = zeros(n,1);
 FP = zeros(n,1);
