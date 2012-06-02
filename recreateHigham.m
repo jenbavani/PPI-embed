@@ -45,8 +45,12 @@ for noise = 0:.1:.5
 
     specificity = TN ./ ( TN + FP);
     sensitivity = TP ./ ( TP + FN);
+    recall = sensitivity;
+    precision = TP ./ (TP + FP);
 
-    plot(1-specificity,sensitivity);
+    plot(1-specificity,sensitivity,'Color','b');
+
+    plot(recall,precision,'Color','r');
 end
 
 hold off;

@@ -49,8 +49,12 @@ clear ng eps;
 
 specificity = TN ./ ( TN + FP);
 sensitivity = TP ./ ( TP + FN);
+recall = sensitivity;
+precision = TP ./ (TP + FP);
 
 plot(1-specificity,sensitivity);
+
+plot(recall,precision,'Color','r');
 
 hold off;
 

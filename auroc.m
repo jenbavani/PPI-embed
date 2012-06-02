@@ -1,6 +1,7 @@
 function [area] = auroc(X,Y)
 % Find the area under the ROC curve defined by X,Y
 
+Y(isnan(Y))=0;
 n = max(size(X));
 
 w = diff(X);
