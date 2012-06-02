@@ -1,4 +1,4 @@
-function [area] = auroc(X,Y)
+function [area] = auc(X,Y)
 % Find the area under the ROC curve defined by X,Y
 
 Y(isnan(Y))=0;
