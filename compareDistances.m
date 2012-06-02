@@ -40,6 +40,8 @@ for i=1:numGraphs
      % dists(dists>2) = 5;
     
      for j=1:2
+        
+        d=dists{i}{j};
 
         % Embed using SMACOF.
         javaaddpath('./MDS/mdscale.jar');
