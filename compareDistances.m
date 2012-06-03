@@ -73,9 +73,9 @@ for i=1:numGraphs
         end
 
 
-        specificity(k,j,i) = TN ./ ( TN + FP);
-        sensitivity(k,j,i) = TP ./ ( TP + FN);
-        precision(k,j,i) = TP ./ (TP + FP);
+        specificity(:,j,i) = TN ./ ( TN + FP);
+        sensitivity(:,j,i) = TP ./ ( TP + FN);
+        precision(:,j,i) = TP ./ (TP + FP);
 
      end
 end
