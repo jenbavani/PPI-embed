@@ -1,4 +1,4 @@
-function alpha=kernelOpt(trData,ecData,trTags,gamma0,gamma1,epsilon)
+function [alpha,k0,K1]=kernelOpt(trData,ecData,trTags,gamma0,gamma1,epsilon)
 
 %% Adapted from 
 %    http://www.ittc.ku.edu/~xwchen/BMCbioinformatics/kernel/kernelOptimization.m
