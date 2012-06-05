@@ -49,13 +49,13 @@
 for g=1:nGraphs-1
     load([prefix{1} num2str(g) '.mat'])
     graphs{g}=graph;
-    neighborcounts(:,:,dmax+1) = ones(num_nodes) - eye(num_nodes);
-    neighborcounts(:,:,dmax+2) = eye(num_nodes);  
+    neighborcounts(:,:,dmax+1) = ones(nPts) - eye(nPts);
+    neighborcounts(:,:,dmax+2) = eye(nPts);  
     neighbors{g} = neighborcounts;
-    lowestOrd = zeros(num_nodes);
+    lowestOrd = zeros(nPts);
     lowOrd = @(i,k) find(neighborcounts(i,k,1:12),1);
-    for i=1:num_nodes
-        for k=1:num_nodes
+    for i=1:nPts
+        for k=1:nPts
             lowestOrd(i,k) = lowOrd(i,k);
         end
     end
@@ -65,13 +65,13 @@ end
 %% Preprocess yeast graph
 graphs{nGraphs} = yeastgraph;
 neighborcounts = dthOrdCommonNeighbors(yeastgraph,20);
-neighborcounts(:,:,dmax+1) = ones(num_nodes) - eye(num_nodes);
-neighborcounts(:,:,dmax+2) = eye(num_nodes);  
+neighborcounts(:,:,dmax+1) = ones(nPts) - eye(nPts);
+neighborcounts(:,:,dmax+2) = eye(nPts);  
 neighbors{nGraphs} = neighborcounts;
-lowestOrd = zeros(num_nodes);
+lowestOrd = zeros(nPts);
 lowOrd = @(i,k) find(neighborcounts(i,k,1:12),1);
-for i=1:num_nodes
-    for k=1:num_nodes
+for i=1:nPts
+    for k=1:nPts
         lowestOrd(i,k) = lowOrd(i,k);
     end
 end
