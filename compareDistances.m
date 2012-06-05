@@ -3,7 +3,7 @@
 % dmax = 10;
 % 
 % %% Load in yeast data and get parameters
-% load(['.' filesep 'data' filesep 'yeastHC.mat'],'yeastgraph');
+ load(['.' filesep 'data' filesep 'yeastHC.mat'],'yeastgraph');
 % nPts = size(yeastgraph,1);
 % nEdges = sum(yeastgraph(:))/2;
 % 
