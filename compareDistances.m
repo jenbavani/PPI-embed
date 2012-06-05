@@ -12,7 +12,7 @@ nEdges = sum(yeastgraph(:))/2;
 
 prefix = cell(size(dimsToTry));
 for i=1:size(dimsToTry,2)
-    prefix{i}=generateGRGs(nPts,nEdges,3,10);
+    prefix{i}=generateGRGs(nPts,nEdges,dimsToTry(i),4);
 end
 % Each file has the following variables stored:
 % 'graph','points','neighborcounts'
@@ -20,7 +20,7 @@ end
 %% Develop distance metrics
 
 for i = 1:size(dimsToTry,2)
-    [P, P2] = predmat(prefix{i},dmax);
+    [P, P2] = predmat(prefix{i},dmax,4);
     cnDistMat1(:,:,i) = P;
     cnDistMat2(:,:,i) = P2;
 end

@@ -1,4 +1,4 @@
-function [P, P2] = predmat(prefix,dmax)
+function [P, P2] = predmat(prefix,dmax,iters)
 %prefix = GRGb
 %dmax = 10
 
@@ -8,7 +8,7 @@ LOall = [];
 NCall = [];
 Dall = [];
 
-for iter = 1:10
+for iter = 1:iters
     filename = [prefix num2str(iter) '.mat']
     load(filename);
     dists = allDistances(points,points);
