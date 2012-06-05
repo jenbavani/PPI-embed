@@ -94,11 +94,11 @@ for i=1:nGraphs
      cnd2 = zeros(nPts);
      for d = 1:12
          Nd = neighbors{i}(:,:,d);
-         m = P(d,1);
-         b = P(d,2);
+         m = cnDistMat1(d,1,1);
+         b = cnDistMat1(d,2,1);
          cnd(lowords{j}==d) = m.*Nd(lowords{j}==d) + b;
-         m2 = P2(d,1);
-         b2 = P2(d,2);
+         m2 = cnDistMat2(d,1,1);
+         b2 = cnDistMat2(d,2,1);
          cnd2(lowords{j}==d) = m2.*Nd(lowords{j}==d) + b2;
     end
     m = max(max(cnd));
