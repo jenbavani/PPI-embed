@@ -1,36 +1,87 @@
+
+dimsToTry = [3 4 5 6];
+dmax = 10;
+
+%% Load in yeast data and get parameters
 load(['.' filesep 'data' filesep 'yeastHC.mat'],'yeastgraph');
 nPts = size(yeastgraph,1);
 nEdges = sum(yeastgraph(:))/2;
-colors = 'rgbcmyk';
 
+
+%% Generate geometric random graphs
+
+prefix = cell(size(dimsToTry));
+for i=1:size(dimsToTry,2)
+    prefix{i}=generateGRGs(nPts,nEdges,3,10);
+end
+% Each file has the following variables stored:
+% 'graph','points','neighborcounts'
+
+%% Develop distance metrics
+
+for i = 1:size(dimsToTry,2)
+    [P, P2] = predmat(prefix{i},dmax);
+    cnDistMat1(:,:,i) = P;
+    cnDistMat2(:,:,i) = P2;
+end
+
+%% Set up for comparisons
+nGraphs=5 
+colors = 'rgbcmyk';
+auroc = zeros(4,nGraphs);
+auprc = zeros(4,nGraphs);
 
 figure;
 hold on;
 
-noise = 0:.1:.5;
-numGraphs=size(noise(:),1)+1;
-graphs = cell(numGraphs,1);
-dists = cell(numGraphs,2);
+graphs = cell([1 nGraphs]);
+dists = cell([4 nGraphs]);
+neighbors = cell([1 nGraphs]);
+lowords = cell([1 nGraphs]);
 
 nDists = nPts^2;
 intervals = 1000:1000:nDists;
-specificity = zeros(size(intervals(:),1),2,numGraphs);
-sensitivity = zeros(size(intervals(:),1),2,numGraphs);
-precision = zeros(size(intervals(:),1),2,numGraphs);
+specificity = zeros(size(intervals(:),1),2,nGraphs);
+sensitivity = zeros(size(intervals(:),1),2,nGraphs);
+precision = zeros(size(intervals(:),1),2,nGraphs);
 
-for i=1:size(noise(:),1)
-    n = noise(i);
-    [g,p] = geoRandGraph(nPts,nEdges,3);
-    graphs{i}=g;
+%% Load in and preprocess random graphs
+for g=1:nGraphs-1
+    load([prefix num2str(ir) '.mat'])
+    graphs{g}=graph;
+    neighborcounts(:,:,dmax+1) = ones(num_nodes) - eye(num_nodes);
+    neighborcounts(:,:,dmax+2) = eye(num_nodes);  
+    neighbors{g} = neighborcounts;
+    lowestOrd = zeros(num_nodes);
+    lowOrd = @(i,k) find(neighborcounts(i,k,1:12),1);
+    for i=1:num_nodes
+        for k=1:num_nodes
+            lowestOrd(i,k) = lowOrd(i,k);
+        end
+    end
+    lowords{g} = lowestOrd;
 end
 
-graphs{numGraphs} = yeastgraph;
+%% Preprocess yeast graph
+graphs{nGraphs} = yeastgraph;
+neighborcounts = dthOrdCommonNeighbors(yeastgraph,20);
+neighborcounts(:,:,dmax+1) = ones(num_nodes) - eye(num_nodes);
+neighborcounts(:,:,dmax+2) = eye(num_nodes);  
+neighbors{nGraphs} = neighborcounts;
+lowestOrd = zeros(num_nodes);
+lowOrd = @(i,k) find(neighborcounts(i,k,1:12),1);
+for i=1:num_nodes
+    for k=1:num_nodes
+        lowestOrd(i,k) = lowOrd(i,k);
+    end
+end
+lowords{nGraphs} = lowestOrd;
 clear yeastgraph;
 
 %     dists = allDistances(p);
 %     mNoise = noise*rand(size(dists))-.5*noise;
 %     dists = dists + mNoise;
-for i=1:numGraphs
+for i=1:nGraphs
      g = graphs{i};
      d = graphallshortestpaths(g);
      d(d>4) = 5;
@@ -38,8 +89,26 @@ for i=1:numGraphs
      d = d.^(1/2);
      dists{i}{2}=d;
      % dists(dists>2) = 5;
+     
+     cnd = zeros(nPts);
+     cnd2 = zeros(nPts);
+     for d = 1:12
+         Nd = neighbors{g}(:,:,d);
+         m = P(d,1);
+         b = P(d,2);
+         cnd(lowords{j}==d) = m.*Nd(lowords{j}==d) + b;
+         m2 = P2(d,1);
+         b2 = P2(d,2);
+         cnd2(lowords{j}==d) = m2.*Nd(lowords{j}==d) + b2;
+    end
+    m = max(max(cnd));
+    cnd(cnd+eye(nPts)==0) = 3*m;
+    dists{3}{j} = cnd;
+    m = max(max(cnd2));
+    cnd2(cnd2+eye(nPts)==0) = 3*m; 
+    dists{4}{j} = cnd2;
     
-     for j=1:2
+     for j=1:4
         
         d=dists{i}{j};
 
@@ -76,9 +145,14 @@ for i=1:numGraphs
         specificity(:,j,i) = TN ./ ( TN + FP);
         sensitivity(:,j,i) = TP ./ ( TP + FN);
         precision(:,j,i) = TP ./ (TP + FP);
+        
+        auroc = auc(1-specificity,sensitivity);
+        auprc = auc(sensitivity,precision);
 
      end
 end
+
+
 
 hold off;
 
