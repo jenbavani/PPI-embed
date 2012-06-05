@@ -47,7 +47,7 @@
 
 %% Load in and preprocess random graphs
 for g=1:nGraphs-1
-    load([prefix num2str(i) '.mat'])
+    load([prefix{1} num2str(g) '.mat'])
     graphs{g}=graph;
     neighborcounts(:,:,dmax+1) = ones(num_nodes) - eye(num_nodes);
     neighborcounts(:,:,dmax+2) = eye(num_nodes);  
