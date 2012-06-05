@@ -1,53 +1,53 @@
 
-dimsToTry = [3 4 5 6];
-dmax = 10;
-
-%% Load in yeast data and get parameters
-load(['.' filesep 'data' filesep 'yeastHC.mat'],'yeastgraph');
-nPts = size(yeastgraph,1);
-nEdges = sum(yeastgraph(:))/2;
-
-
-%% Generate geometric random graphs
-
-prefix = cell(size(dimsToTry));
-for i=1:size(dimsToTry,2)
-    prefix{i}=generateGRGs(nPts,nEdges,dimsToTry(i),4);
-end
-% Each file has the following variables stored:
-% 'graph','points','neighborcounts'
-
-%% Develop distance metrics
-
-for i = 1:size(dimsToTry,2)
-    [P, P2] = predmat(prefix{i},dmax,4);
-    cnDistMat1(:,:,i) = P;
-    cnDistMat2(:,:,i) = P2;
-end
-
-%% Set up for comparisons
-nGraphs=5 
-colors = 'rgbcmyk';
-auroc = zeros(4,nGraphs);
-auprc = zeros(4,nGraphs);
-
-figure;
-hold on;
-
-graphs = cell([1 nGraphs]);
-dists = cell([4 nGraphs]);
-neighbors = cell([1 nGraphs]);
-lowords = cell([1 nGraphs]);
-
-nDists = nPts^2;
-intervals = 1000:1000:nDists;
-specificity = zeros(size(intervals(:),1),2,nGraphs);
-sensitivity = zeros(size(intervals(:),1),2,nGraphs);
-precision = zeros(size(intervals(:),1),2,nGraphs);
+% dimsToTry = [3 4 5 6];
+% dmax = 10;
+% 
+% %% Load in yeast data and get parameters
+% load(['.' filesep 'data' filesep 'yeastHC.mat'],'yeastgraph');
+% nPts = size(yeastgraph,1);
+% nEdges = sum(yeastgraph(:))/2;
+% 
+% 
+% %% Generate geometric random graphs
+% 
+% prefix = cell(size(dimsToTry));
+% for i=1:size(dimsToTry,2)
+%     prefix{i}=generateGRGs(nPts,nEdges,dimsToTry(i),4);
+% end
+% % Each file has the following variables stored:
+% % 'graph','points','neighborcounts'
+% 
+% %% Develop distance metrics
+% 
+% for i = 1:size(dimsToTry,2)
+%     [P, P2] = predmat(prefix{i},dmax,4);
+%     cnDistMat1(:,:,i) = P;
+%     cnDistMat2(:,:,i) = P2;
+% end
+% 
+% %% Set up for comparisons
+% nGraphs=5 
+% colors = 'rgbcmyk';
+% auroc = zeros(4,nGraphs);
+% auprc = zeros(4,nGraphs);
+% 
+% figure;
+% hold on;
+% 
+% graphs = cell([1 nGraphs]);
+% dists = cell([4 nGraphs]);
+% neighbors = cell([1 nGraphs]);
+% lowords = cell([1 nGraphs]);
+% 
+% nDists = nPts^2;
+% intervals = 1000:1000:nDists;
+% specificity = zeros(size(intervals(:),1),2,nGraphs);
+% sensitivity = zeros(size(intervals(:),1),2,nGraphs);
+% precision = zeros(size(intervals(:),1),2,nGraphs);
 
 %% Load in and preprocess random graphs
 for g=1:nGraphs-1
-    load([prefix num2str(ir) '.mat'])
+    load([prefix num2str(i) '.mat'])
     graphs{g}=graph;
     neighborcounts(:,:,dmax+1) = ones(num_nodes) - eye(num_nodes);
     neighborcounts(:,:,dmax+2) = eye(num_nodes);  
