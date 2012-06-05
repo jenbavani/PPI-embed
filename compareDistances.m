@@ -93,7 +93,7 @@ for i=1:nGraphs
      cnd = zeros(nPts);
      cnd2 = zeros(nPts);
      for d = 1:12
-         Nd = neighbors{g}(:,:,d);
+         Nd = neighbors{i}(:,:,d);
          m = P(d,1);
          b = P(d,2);
          cnd(lowords{j}==d) = m.*Nd(lowords{j}==d) + b;
