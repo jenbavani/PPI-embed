@@ -15,6 +15,6 @@ for iter = 1:iters
     msg = [num2str(dims) 'd, iteration ' num2str(iter) ] 
     [graph,points] = geoRandGraph(numNodes,numEdges,dims);
     neighborcounts = dthOrdCommonNeighbors(graph,20);
-    filename = ['data' filesep prefix num2str(iter) '.mat'];
+    filename = [prefix num2str(iter) '.mat'];
     save(filename,'graph','points','neighborcounts');
 end
