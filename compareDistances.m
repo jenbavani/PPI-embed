@@ -81,6 +81,7 @@ clear yeastgraph;
 %     dists = allDistances(p);
 %     mNoise = noise*rand(size(dists))-.5*noise;
 %     dists = dists + mNoise;
+j=1;
 for i=1:nGraphs
      g = graphs{i};
      d = graphallshortestpaths(g);
@@ -96,7 +97,7 @@ for i=1:nGraphs
          Nd = neighbors{i}(:,:,d);
          m = cnDistMat1(d,1,1);
          b = cnDistMat1(d,2,1);
-         cnd(lowords{j}==d) = m.*Nd(lowords{j}==d) + b;
+         cnd(lowords{1}==d) = m.*Nd(lowords{1}==d) + b;
          m2 = cnDistMat2(d,1,1);
          b2 = cnDistMat2(d,2,1);
          cnd2(lowords{j}==d) = m2.*Nd(lowords{j}==d) + b2;
