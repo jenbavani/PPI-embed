@@ -40,7 +40,7 @@ for e = 1:nEdges
 end
 adjMat = sparse(adjMatFull);
 
-    %% Helper function
+    %% Helper function: getNodeNum
     function nodeNum = getNodeNum(nodeName)
         pos = strcmp(nodeName,names);
         if sum(pos) == 0
